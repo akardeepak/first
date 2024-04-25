@@ -1,0 +1,311 @@
+\documentclass[10pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{graphics}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\graphicspath{ {PSD_exp/jpg_images} }
+\usepackage{hyperref}
+\usepackage[square,numbers]{natbib}
+\bibliographystyle{abbrvnat}
+\usepackage{verbatim}
+\usepackage{comment}
+\title{ A Digital Pulse Shape Discriminator for Separating Low and High Energy Photon Pulses of Phoswich detector}
+\author{Deepak Kumar Akar\textsuperscript{1,2}, I. S. Singh\textsuperscript{2}, M. Y. Nadar\textsuperscript{2}, P. D. Sawant\textsuperscript{2} and R. G. Thomas\textsuperscript{1,3}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\textsuperscript{\textit{1}}\textit{Homi Bhabha National Institute, Mumbai, India.}
+
+\textsuperscript{\textit{2}}\textit{Radiation Safety Systems Division, Bhabha Atomic Research Centre, Mumbai, India.}
+
+\textsuperscript{\textit{3}}\textit{Nuclear Physics Division, Bhabha Atomic Research Centre, Mumbai, India. } 
+
+ \textit{Email: }\href{mailto:akardeep@barc.gov.in}{\textit{akardeep@barc.gov.in}}
+
+\section*{Abstract}
+
+This work presents application of digital signal processing based pulse shape discrimination of pulses arising due to interaction of photons in a phoswich detector comprising of a thin primary NaI(Tl) and secondary CsI(Tl) detectors. This discrimination provides opportunity to simultaneously quantify the activity of low and high energy photon emitting radionuclide in a sample.
+
+\section*{Keywords:} DPP-PSD, phoswich detector, pulse shape discrimination, in-vivo measurement.  
+
+\section*{Introduction}
+
+Pulse shape discrimination (PSD) technique is used in various fields such as radiation detection, elemental analysis, astrophysics, biomedical applications, and information processing, to distinguish different type of particles, based on shape of scintillation light pulses produced by them in the detectors. It has been used extensively to discriminate n-$\gamma$ or other particles.
+
+Measurement of low energy photons such as 60 keV from Am-241 are done in well shielded rooms such as steel rooms with graded-Z linings to achieve low MDA values. The MDA values are further reduced using Phoswich detector with pulse shape discriminator (PSD) for measurements in presence of unavoidable high energy photon background such as in vivo monitoring of Am-241 in radiation workers where K-40 background is always there. For such measurements, crystal sizes in phoswich detector are selected such that only photons upto energy of interest interact in primary detector and photons with higher energies may have interactions in secondary detector. PSD is set such that photon pulses arising purely due to primary detector are counted and all other pulses are rejected. 
+
+In this approach the pulses due to high energy photons are discarded and monitoring radionuclide responsible for them requires another set up or additional modules. With advent of digital pulse processing (DPP) units all the pulses arising due to the Phoswich detector can be stored and analysed to get low as well as high energy photon emitter information simultaneously. 
+
+This work presents application of DPP for simultaneous quantification of low and high energy photon emitters.
+
+\section*{Materials and methods:}  
+
+\subsection*{Detector} A cylindrcal Phoswich detector of diameter of 20 cm having a 3 mm thick primary NaI(Tl) crystal followed by a secondary 5 cm thick CsI(Tl) crystal has been used in this study. Here the NaI(Tl) crystal attenuates more than 99\% of 60 keV photons and a fraction photons of higher energy reach and interact in CsI(Tl) crystal based on their energy as well as interactions they undergo. The decay time for the scintillation light in the NaI(Tl) crystal has been reported as 230 ns and for CsI(Tl) there are two components 680 (64\%) and 3340 (36\%) ns \cite{knoll2010radiation}. The difference in decay times is used to discriminate the photons of different energies.
+
+\subsection*{Shielding}Interference due to background radiation is reduced by placing the detector in a room walled with 20 cm steel followed by graded Z-lining of 3 mm Pb, 2 mm Cd and 0.5 mm Cu towards the detector.
+
+\subsection*{Analog system}
+The analog system used with the detector consists of delay line amplifier, pulse shape analyser with time to amplitude converter (TAC) and discriminator, delay amplifier and logic gate. A delay line amplifier is used to get a single delay line shaped output pulse produced by adding the pulse to its inversion with correction for pole zero correction. A pulse shape discriminator having a pulse shape analyzer to measure time for measuring time of pulse at 10\% and 90\% of its maximum value followed by a TAC. 
+%In analog system, a delay line amplifier is used to get a single delay line shaped output pulse for each input pulse (by adding it with its inversion and pole zero cancellation).  This pulse is fed to a pulse shape discriminator (PSD) having a pulse shape analyzer (PSA) and time to amplitude converter to measure the time interval of the pulse at predetermined levels of 10\%  and 90\% of its maximum value. If this interval indicates a pulse from NaI(Tl), logic 1 is fed to a logic gate. Analog pulses with definite delay corresponding to time lag in PSD arrive at other input of this gate.  If analog pulses are from NaI(Tl) the gate send them for pulse height spectrum generation.
+
+\subsection*{Digitizer} CAEN DT5725, a 14-bit digitizer with sampling rate of 250 MegaSamples/second has been used for generating of energy and PSD spectra using the pulses obtained at preamplifier output from the detector. The waveform data has been stored in ROOT format. CERN ROOT data analysis framework \cite{brun1997root}has been used to analyse the data offline.  
+
+The pulses have been recorded for a record length of 2784 ns. Energy deposited in each pulse has been estimated using charge integration over a gate period of 1500 ns termed as long gate considering decay time of the crystals. For distinguishing the pulses from different crystals charge integration method was applied to compute pulse shape discrimination parameter (PSD) for each pulse from the stored waveform data using equation \ref{eq:1}. For this purpose short gate has been selected as 600 ns which is higher than decay time of NaI(Tl) but relatively smaller if CsI(Tl) is considered. This choice makes more fraction of area from NaI(Tl) pulses to be integrated but tail part from CsI(Tl)pulses is left out.  
+\begin{equation}\label{eq:1}
+    \centering \quad PSD =  \dfrac{Q_{Long}-Q_{Short}}{Q_{Long}}
+\end{equation}
+
+One important requirement for distinguishing pulses is separation between these PSD values due to two crystals or peaks in PSD spectrum. This separation is quantified the figure of merit, computed using equation \ref{eq:2}. 
+\begin{equation}\label{eq:2}
+    \centering \quad FOM =  \dfrac{S_1-S_2}{D}
+\end{equation}
+
+
+\begin{table}\label{tab:1}
+\caption{Parameters used while digital waveform storage and analysis}
+\centering
+
+\begin{tabular}{| l | l |}  
+\hline
+Parameter & Value \\
+\hline
+Record length & 2784 ns \\
+\hline
+Long gate & 1500 ns \\
+\hline
+Short Gate & 600 ns \\
+\hline
+
+\end{tabular}
+
+\end{table}
+\subsection*{Sources} Point sources of \textsuperscript{137}Cs and \textsuperscript{241}Am have been used in this study. The activity of the sources were ... and 2.85 kBq at the time of measurement. The source to detector surface distance in the study has been kept as 10 cm. other sources used are Enr. U. and \textsuperscript{40}K.   
+\subsection*{Experiment}{Spectra with using analog and digital electronics based acquisition systems were acquired for \textsuperscript{241}Am, \textsuperscript{137}Cs and both sources. The spectra were acquired with and without PSD for analog setup. For digital setup the waveform data for unfiltered spectra were stored as ROOT data using Compass software and analysed both online and offline to get pulse height spectra (PHS) and pulse shape discrimination parameter spectra (PSD).}
+
+\section*{Result and discussion: }
+\subsection*{Spectra from analog system }{The spectra obtained for \textsuperscript{241}Am, \textsuperscript{137}Cs and both sources using analog system with PSD in and out are shown in the figures \ref{Am_in}, \ref{Am_out}, \ref{Cs_in}, \ref{Cs_out} .}
+{For $^{241}Am$ the spectra the losses due to PSD in low energy photon regions are minimal as can be seen from figures \ref{Am_in} and \ref{Am_out}}.  
+
+\begin{figure}[ht]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{PSD_exp/jpg_images/Am_out.jpg}         
+		\caption{Without PSD}
+		\label{Am_out}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{PSD_exp/jpg_images/Am_in.jpg}         
+		\caption{With PSD}
+		\label{Am_in}
+		
+	\end{subfigure}   
+	\caption{PHS for $^{241}Am$}
+\end{figure}
+
+{For $^{137}Cs$ the PSD out spectrum has 662 keV $\gamma$ and low energy x-ray peaks. The 662 keV peak is filtered out on application of PSD as can be seen from figures \ref{Cs_out} and \ref{Cs_in}}.  
+\begin{figure}[ht]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{PSD_exp/jpg_images/Cs_out.jpg}         
+		\caption{Without PSD}
+		\label{Cs_out}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{PSD_exp/jpg_images/Cs_in.jpg}         
+		\caption{With PSD}
+		\label{Cs_in}
+		
+	\end{subfigure}   
+	\caption{PHS for $^{137}Cs$}
+\end{figure}
+The spectra for both $^{137}Cs$ and $^{241}Am$ sources together are as shown in figures \ref{Cs_Am_out} and \ref{Cs_Am_in}.  
+\begin{figure}[ht]
+	\begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\linewidth]{PSD_exp/jpg_images/Cs_Am_out.jpg}         
+        \caption{Without PSD}
+        \label{Cs_Am_in}
+     \end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\linewidth]{PSD_exp/jpg_images/Cs_Am_in.jpg}         
+        \caption{With PSD}
+        \label{Cs_Am_out}
+        
+ \end{subfigure}   
+ \caption{PHS for both $^{241}Am$ and $^{137}Cs$}
+ \label{combinedAnalog}
+\end{figure}
+
+In case of digital system pulse shape discrimination parameter (PSD) spectra were also generated along with PHS, using stored waveform data. 
+The pulse height spectrum (PHS) and PSD spectrum for $^{241}Am$ are shown in Figure \ref{Am_digi}. 
+Using DPP system, PHS obtained for \textsuperscript{241}Am is shown in , \textsuperscript{137}Cs as shown in Figure \ref{PHSAm} and \ref{PHSCs}
+\begin{figure}[ht]
+	\begin{subfigure}{0.3\textwidth} 
+		 \centering       
+        \includegraphics[width=1\linewidth]{PSD_exp/jpg_images/AmPHS.jpg}         
+        \caption{PHS}
+        \label{PHSAm}
+	\end{subfigure}
+
+	\begin{subfigure}{0.3\textwidth} 
+		 \centering       
+        \includegraphics[width=1\linewidth]{PSD_exp/jpg_images/AmPSD.jpg}         
+        \caption{PSD spectrum }
+        \label{PSDAm}        
+	\end{subfigure}
+	
+	\begin{subfigure}[ht]{0.3\textwidth}		
+		\includegraphics[width=1\linewidth]{PSD_exp/jpg_images/AmPHvsPS.jpg}         
+		\caption{PHS vs PSD spectrum}
+		\label{PHvsPSAm}
+	\end{subfigure}
+\caption{Pulse height and PSD spectra for both $^{241}Am$ using DPP}
+\label{Am_digi}
+\end{figure}
+
+In PSD spectrum drawn as figure \ref{PSDAm}, a single PSD peak is formed due to interaction of low energy photons due to \textsuperscript{241}Am in NaI(Tl) crystal. In case of \textsuperscript{137}Cs, 662 keV photons interact primarily in CsI(Tl) resulting in prominent peak in Figure \ref{PSDCs}. Low energy X-rays from  e
+In case of $^{241}Am$, the interactions take place in NaI(Tl) only due to low energy photons and a single PSD peak appears. In case of \textsuperscript{241}Cs extra peak at lower energy appears due to X-rays from \textsuperscript{137}Ba.  
+
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsPHS.jpg}         
+        \caption{Full energy spectrum for $^{137}Cs$}
+        \label{PHSCs}
+\end{figure}
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsPSD.jpg}         
+        \caption{Pulse Shape spectrum for $^{137}Cs$}
+        \label{PSDCs}
+\end{figure}
+
+
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{AmLong.jpg}         
+        \caption{Spectrum for $^{241}Am$ for longer PSD peak}
+        \label{LongAm}
+\end{figure}
+
+
+
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{PSD_exp/jpg_images/CsPHvsPS.jpg}         
+        \caption{Full energy spectrum for $^{137}Cs$}
+        \label{PHvsPSCs}
+\end{figure}
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsLong.jpg}         
+        \caption{Spectrum for $^{137}Cs$ for longer PSD peak}
+        \label{LongCs}
+\end{figure}
+{\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsAmShort.jpg}         
+        \caption{Spectrum for $^{137}Cs$ with $^{241}Am$ for shorter PSD peak}
+        \label{ShortCsAm}
+\end{figure}}
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsAmPHS.jpg}         
+        \caption{Full energy spectrum for $^{137}Cs$ with $^{241}Am$}
+        \label{PHSCsAm}
+\end{figure}
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsAmPSD.jpg}         
+        \caption{Pulse Shape spectrum for $^{137}Cs with ^{241}Am$}
+        \label{PSDCsAm}
+\end{figure}
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{PSD_exp/jpg_images/CsAmPHvsPS.jpg}         
+        \caption{Full energy spectrum for $^{137}Cs$ with $^{241}Am$}
+        \label{PHvsPSCsAm}
+\end{figure}
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsAmLong.jpg}         
+        \caption{Spectrum for $^{137}Cs$ with $^{241}Am$ for longer PSD peak}
+        \label{LongCsAm}
+\end{figure}
+{\begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{CsAmShort.jpg}         
+        \caption{Spectrum for $^{137}Cs$ with $^{241}Am$ for shorter PSD peak}
+        \label{ShortCsAm}
+\end{figure}}
+
+
+In the next step both the sources were kept together and the PSD peaks in the combined spectrum were used for filtering the spectra due to 60 keV and 662 keV photons from unfiltered spectrum. The resultant spectra and energy spectra are shown in the table. It can be seen that the selected PSD cut values separate unfiltered spectrum obtained in this case to low and high energy spectra properly.
+
+\subsection*{PSD, FOM and generation of spectra from different crystals}
+
+    \textbf{Figure of Merit(FOM) of PSD.}
+    FOM was evaluated for DPP-PSD using $^{241}Am$ and $^{137}Cs$ point sources in standard geometry. The PSD peak separation of 60 keV and 662 keV are studied. Using the separation of peaks and their widths \cite{knoll2010radiation}, FOM was found to be ~ 3.2.
+    
+    \textbf{PSD loss in LEP region due to presence of $^{137}Cs$ and other HEP emitters}
+    
+    Radiation workers undergo lung monitoring to detect internal contamination due to actinides in lungs. There is a possibility that along with \textsuperscript{241}Am, some high energy photon (HEP) emitter, may also be present in lungs due to inhalation intake. Pulse shape discrimination (PSD) system used with Phoswich detector (thin NaI(Tl) primary and thick CsI(Tl) secondary detector) is standardised to select only low energy photon pulses due to interaction in NaI(Tl) only and reject other pulses. During this process a loss of LEP pulses may occur which should be quantified.   
+    The PSD loss was initially evaluated with \textsuperscript{241}Am source in standard geometry and found to be less than 1.5\%. Further, PSD loss in 60 keV energy regions of Am was studied by positioning Enr. U., \textsuperscript{137}Cs and \textsuperscript{40}K point sources in standard geometry with and without \textsuperscript{241}Am source. Counts filtered due to applied PSD were compared in all the cases. For \textsuperscript{137}Cs, it is found that contribution in LEP regions increases with \textsuperscript{137}Cs source strength but this contribution gets reduced greatly by application of PSD. Preliminary studies reveal no PSD loss of LEPs in Pu/Am regions during this filtering. Figure 1 shows \textsuperscript{241}Am and \textsuperscript{137}Cs source spectrum acquired using DPP-PSD showing filtered region. Unfiltered region counts are in the background, due to interaction in CsI (Tl) as well as in both detectors. Figure 2 shows \textsuperscript{241}Am and \textsuperscript{137}Cs source spectrum acquired using DPP-PSD along with PSD and PSD vs energy plots. 
+    
+    The comparison of efficiency estimated for Am and Cs source is provided in the table. PSD losses are also listed.  
+    The unfiltered spectrum is due to all pulses generated in phoswich detector. The lower PSD value is due to photon interactions in NaI(Tl) which is used for filtered low energy photon spectrum.  
+    
+    Fig: (a) PSD and (b) Energy spectrum of phoswich detector with \textsuperscript{137}Cs and \textsuperscript{241}Am.
+    
+     \textbf{LLNL measurements using Analog and DPP-PSD}
+
+Comparison of digital PSD with analog PSD
+Digital PSD is compared with analog PSD for $^{241}Am$ point source kept at 10 cm distance for psd loss and efficiency as well as for LLNL phantom with $^{241}Am$ lungs measurements. The deviation in the results obtained with digital psd are found to be less than 5 \% with respect to analog psd for both the measurements. PSD loss was comparable and the additional advantage of visualising the spectra both for psd filter and without filter.
+ 
+
+\begin{enumerate} 
+    \item  FOM 
+    
+    \item  Comparison with point source 
+    
+    \item  Comparison with LLNL phantom measurements 
+         LLNL phantom was measured with phoswich detector under standard measurement geometry using analog and DPP-PSD. The phantom had $^{241}Am$ lung set and measurments were carried out with different chest wall thicknesses (CWT). The deviation in the results obtained with DPP-PSD with respect to analog PSD was less than 3.5 \% for the three CWTs. The results obtained are given in table 2. 
+    
+    \begin{table}
+    	\centering
+    	
+    	\begin{tabular}{| l | l | l |}  
+    		\hline
+    		CWT & Analog & DPP-PSD \\
+    		\hline
+    		1.76 & 13.33 & 12.86 \\
+    		\hline
+    		2.84 & 10.34 & 10.22 \\
+    		\hline
+    		3.5 & 8.8 & 8.79  \\
+    		\hline
+    		
+    	\end{tabular}
+    	
+    \end{table}
+\end{enumerate}
+ 
+ 
+
+  The results for energy spectrum with digitizer-based system are comparable with analog system being used for low energy measurements. Further it has advantage of providing full spectrum which can be used for computing high energy photon response simultaneously.  
+
+ Studies on the pulse shapes from theoretical studies
+
+ 
+ 
+
+  \section*{Conclusion }This system will be useful for the in-vivo monitoring of low energy photon emitters in radiation workers in presence of high energy photon emitters. The availability of raw and unfiltered energy and pulse shape spectra with event numbers provide opportunity for detailed offline analysis using different algorithms if need arises. It reduces the efforts required for repeated spectrum acquisition.  
+
+\bibliography{PSD_exp/References/ref.bib}
+
+\end{document}
